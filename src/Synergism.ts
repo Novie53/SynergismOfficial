@@ -24,7 +24,7 @@ import {
   challengeachievementcheck,
   resetachievementcheck
 } from './Achievements'
-import { antSacrificePointsToMultiplier, autoBuyAnts, calculateCrumbToCoinExp } from './Ants'
+import { antSacrificePointsToMultiplier, autoBuyAnts, calculateCrumbToCoinExp, sacrificeAnts } from './Ants'
 import { autoUpgrades } from './Automation'
 import type { TesseractBuildings } from './Buy'
 import {
@@ -55,7 +55,9 @@ import {
   calculateTotalAcceleratorBoost,
   calculateTotalCoinOwned,
   dailyResetCheck,
-  exitOffline
+  exitOffline,
+  calculateAntSacrificeRewards,
+  CalcCorruptionStuff
 } from './Calculate'
 import {
   corrChallengeMinimum,
@@ -91,9 +93,11 @@ import {
   buyTalismanEnhance,
   buyTalismanLevels,
   calculateMaxTalismanLevel,
+  buyTalismanResources,
   toggleTalismanBuy,
   updateTalismanAppearance,
-  updateTalismanInventory
+  updateTalismanInventory,
+  respecTalismanConfirm
 } from './Talismans'
 import { calculatetax } from './Tax'
 import { calculateTesseractBlessings } from './Tesseracts'
@@ -130,7 +134,8 @@ import {
   buyConstantUpgrades,
   categoryUpgrades,
   getConstUpgradeMetadata,
-  upgradeupdate
+  upgradeupdate,
+  clickUpgrades
 } from './Upgrades'
 // import { LegacyShopUpgrades } from './types/LegacySynergism';
 
@@ -157,7 +162,7 @@ import { disableHotkeys } from './Hotkeys'
 import { init as i18nInit } from './i18n'
 import { handleLogin } from './Login'
 import { octeractData, OcteractUpgrade } from './Octeracts'
-import { updatePlatonicUpgradeBG } from './Platonic'
+import { updatePlatonicUpgradeBG, platUpgradeBaseCosts } from './Platonic'
 import { getQuarkBonus, QuarkHandler } from './Quark'
 import { playerJsonSchema } from './saves/PlayerJsonSchema'
 import { playerSchema } from './saves/PlayerSchema'
@@ -174,6 +179,8 @@ import { changeSubTab, changeTab, Tabs } from './Tabs'
 import { settingAnnotation, toggleIconSet, toggleTheme } from './Themes'
 import { clearTimeout, clearTimers, setInterval, setTimeout } from './Timers'
 import type { PlayerSave } from './types/LegacySynergism'
+
+
 
 export const player: Player = {
   firstPlayed: new Date().toISOString(),
@@ -5869,7 +5876,15 @@ const tick = () => {
   }
 }
 
+
+var Nov_var_customeTimeMulti = 1
+export const Nov_CustomeTimeMulti = (val: number) => {
+  Nov_var_customeTimeMulti = val
+}
+
+
 const tack = (dt: number) => {
+  dt *= Nov_var_customeTimeMulti
   if (!G.timeWarp) {
     // Adds Resources (coins, ants, etc)
     const timeMult = calculateTimeAcceleration().mult
@@ -5938,7 +5953,7 @@ const tack = (dt: number) => {
     automaticTools('addOfferings', dt * player.cubeUpgrades[2])
   }
 
-  runChallengeSweep(dt)
+  runChallengeSweep(dt / Nov_var_customeTimeMulti)
 
   // Check for automatic resets
   // Auto Prestige. === 1 indicates amount, === 2 indicates time.
@@ -6317,6 +6332,54 @@ function playerNeedsReminderToExport () {
 
   return Date.now() - player.lastExportedSave > day * 3
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+(window as any).globals = G;
+(window as any).calculateAntSacrificeRewards = calculateAntSacrificeRewards;
+(window as any).antSacrificePointsToMultiplier = antSacrificePointsToMultiplier;
+(window as any).CalcCorruptionStuff = CalcCorruptionStuff;
+(window as any).platUpgradeBaseCosts = platUpgradeBaseCosts;
+(window as any).buyAccelerator = buyAccelerator;
+(window as any).buyMultiplier = buyMultiplier;
+(window as any).boostAccelerator = boostAccelerator;
+(window as any).buyMax = buyMax;
+(window as any).clickUpgrades = clickUpgrades;
+(window as any).buyCrystalUpgrades = buyCrystalUpgrades;
+(window as any).buyParticleBuilding = buyParticleBuilding;
+(window as any).respecTalismanConfirm = respecTalismanConfirm;
+(window as any).sacrificeAnts = sacrificeAnts;
+(window as any).reset = reset;
+(window as any).format = format;
+(window as any).buyTalismanResources = buyTalismanResources;
+(window as any).buyResearch = buyResearch;
+(window as any).Nov_CustomeTimeMulti = Nov_CustomeTimeMulti;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 window.addEventListener('load', async () => {
   await i18nInit()
