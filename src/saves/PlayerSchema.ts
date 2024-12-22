@@ -680,6 +680,7 @@ export const playerSchema = z.object({
               HTMLTag: singularityChallengeData[k].HTMLTag,
               highestSingularityCompleted,
               enabled,
+              resetTime: singularityChallengeData[k].resetTime,
               singularityRequirement: singularityChallengeData[k].singularityRequirement,
               scalingrewardcount: singularityChallengeData[k].scalingrewardcount,
               uniquerewardcount: singularityChallengeData[k].uniquerewardcount,
@@ -734,6 +735,8 @@ export const playerSchema = z.object({
 
   ultimateProgress: z.number().default(() => blankSave.ultimateProgress),
   ultimatePixels: z.number().default(() => blankSave.ultimatePixels),
+
+  singChallengeTimer: z.number().default(() => blankSave.singChallengeTimer),
 
   // TODO: what type?
   caches: z.record(z.string(), z.any())
