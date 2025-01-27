@@ -377,17 +377,15 @@ export const changeTalismanModifier = (i: number) => {
 }
 
 export const respecTalismanConfirm = (i: number) => {
-  if (player.runeshards >= 100000 && i < 7) {
+  if (i < 7) {
     for (let j = 1; j <= 5; j++) {
       player[`talisman${num[i]}` as const][j] = G.mirrorTalismanStats[j]
     }
-    player.runeshards -= 100000
     DOMCacheGetOrSet('confirmTalismanRespec').style.display = 'none'
     DOMCacheGetOrSet('talismanrespec').style.display = 'none'
     DOMCacheGetOrSet('talismanEffect').style.display = 'block'
     showTalismanEffect(i)
-  } else if (player.runeshards >= 400000 && i === 7) {
-    player.runeshards -= 400000
+  } else if (i === 7) {
     for (let j = 0; j < 7; j++) {
       for (let k = 1; k <= 5; k++) {
         player[`talisman${num[j]}` as const][k] = G.mirrorTalismanStats[k]
