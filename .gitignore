@@ -1,15 +1,3 @@
-node_modules/
-*.js
-!scripts/*.js
-dist
-!.eslintrc.js
-.idea
+/node_modules
+/dist
 package-lock.json
-
-.project
-.settings/*
-Pictures/Thumbs.db
-Pictures/Splash/Thumbs.db
-Pictures/TransparentPics/Thumbs.db
-
-**/.DS_Store
